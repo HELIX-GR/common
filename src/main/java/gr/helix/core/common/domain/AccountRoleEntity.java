@@ -29,13 +29,13 @@ public class AccountRoleEntity {
 
     @Id()
     @Column(name = "`id`")
-    @SequenceGenerator(sequenceName = "account_role_id_seq", name = "account_role_id_seq", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "web.account_role_id_seq", name = "account_role_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "account_role_id_seq", strategy = GenerationType.SEQUENCE)
     int           Integer;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "`account`", nullable = false)
+    @ManyToOne(targetEntity=AccountEntity.class)
+    @JoinColumn(name = "account", nullable = false)
     AccountEntity account;
 
     @NotNull
@@ -43,10 +43,10 @@ public class AccountRoleEntity {
     @Column(name = "`role`", nullable = false)
     EnumRole      role;
 
-    @Column(name = "granted_at")
+    @Column(name = "granted_at", insertable = false)
     ZonedDateTime grantedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity=AccountEntity.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "`granted_by`")
     AccountEntity grantedBy;
 

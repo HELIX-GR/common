@@ -37,7 +37,7 @@ public class AccountEntity {
 
     @Id
     @Column(name = "`id`", updatable = false)
-    @SequenceGenerator(sequenceName = "account_id_seq", name = "account_id_seq", allocationSize = 1)
+    @SequenceGenerator(sequenceName = "web.account_id_seq", name = "account_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "account_id_seq", strategy = GenerationType.SEQUENCE)
     Integer                 id;
 
@@ -74,7 +74,7 @@ public class AccountEntity {
     @Column(name = "`registered_at`")
     ZonedDateTime           registeredAt;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(targetEntity=AccountRoleEntity.class,mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<AccountRoleEntity> roles   = new ArrayList<>();
 
     public AccountEntity() {
