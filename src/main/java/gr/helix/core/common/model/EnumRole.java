@@ -4,7 +4,10 @@ import java.util.Arrays;
 
 public enum EnumRole {
 
-    ROLE_USER(1, "User"), ROLE_ADMIN(2, "Administrator");
+    ROLE_USER(1, "User"),
+    ROLE_ADMIN(2, "Administrator"),
+    ROLE_DEVELOPER(3, "Developer"),
+    ;
 
     private final int    value;
 
