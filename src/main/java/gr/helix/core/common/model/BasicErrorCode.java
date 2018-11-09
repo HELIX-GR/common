@@ -16,6 +16,7 @@ public enum BasicErrorCode implements ErrorCode
 
     AUTHENTICATION_FAILED,
     AUTHENTICATION_REQUIRED,
+    AUTHENTICATION_INVALID_KEY,
 
     USER_NOT_FOUND,
 
