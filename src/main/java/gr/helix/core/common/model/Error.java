@@ -9,11 +9,11 @@ public class Error {
         ;
     }
 
-    private ErrorCode code;
+    private final ErrorCode code;
 
-    private EnumLevel level;
+    private final EnumLevel level;
 
-    private String description;
+    private final String    description;
 
     public Error(ErrorCode code, String description) {
         this.code = code;
@@ -27,20 +27,20 @@ public class Error {
         this.level = level;
     }
 
-    public ErrorCode getCode() {
-        return code;
+    public String getCode() {
+        return this.code.key();
     }
 
     public EnumLevel getLevel() {
-        return level;
+        return this.level;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     @Override
     public String toString() {
-        return getDescription();
+        return this.getDescription();
     }
 }
