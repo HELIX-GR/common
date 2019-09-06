@@ -20,22 +20,12 @@ public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // Account properties specific to HELIX
+
     @JsonIgnore()
     private Integer           id;
 
     private String            username;
-
-    private String            email;
-
-    @JsonIgnore()
-    private String            givenName;
-
-    @JsonIgnore()
-    private String            familyName;
-
-    private String            name;
-
-    private String            lang;
 
     @JsonIgnore()
     private boolean           active           = true;
@@ -43,12 +33,30 @@ public class Account implements Serializable {
     @JsonIgnore()
     private boolean           blocked          = false;
 
-    private String            imageUrl;
+    private String            email;
+
+    @JsonIgnore()
+    private String            familyName;
+
+    @JsonIgnore()
+    private String            givenName;
+
+    private String            lang;
 
     @JsonIgnore()
     private ZonedDateTime     registeredAt;
 
     private Set<EnumRole>     roles            = EnumSet.noneOf(EnumRole.class);
+
+    // Authentication provider properties
+
+    private String            name;
+
+    private String            imageUrl;
+
+    // Profile properties
+
+    private AccountProfile    profile          = new AccountProfile();
 
     protected Account() {
     }
@@ -171,6 +179,14 @@ public class Account implements Serializable {
 
     public void setRegisteredAt(ZonedDateTime registeredAt) {
         this.registeredAt = registeredAt;
+    }
+
+    public AccountProfile getProfile() {
+        return this.profile;
+    }
+
+    public void setProfile(AccountProfile profile) {
+        this.profile = profile;
     }
 
 }

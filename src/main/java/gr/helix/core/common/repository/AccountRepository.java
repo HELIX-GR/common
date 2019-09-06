@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import gr.helix.core.common.domain.AccountEntity;
 
 @Repository
-@Transactional(readOnly = true)
-public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
+@Transactional()
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer>, CustomizedAccountRepository  {
 
     @Query("FROM Account a WHERE a.username = :username")
     AccountEntity findOneByUsername(@Param("username") String username);

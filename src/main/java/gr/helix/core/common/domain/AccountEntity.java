@@ -13,7 +13,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -73,6 +75,10 @@ public class AccountEntity {
 
     @Column(name = "`registered_at`")
     ZonedDateTime           registeredAt;
+
+    @OneToOne(mappedBy = "account")
+    @JoinColumn(name = "account")
+    private AccountProfileEntity profile;
 
     @OneToMany(targetEntity=AccountRoleEntity.class,mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<AccountRoleEntity> roles   = new ArrayList<>();
@@ -162,6 +168,14 @@ public class AccountEntity {
         return this.registeredAt;
     }
 
+    public AccountProfileEntity getProfile() {
+        return this.profile;
+    }
+
+    public void setProfile(AccountProfileEntity profile) {
+        this.profile = profile;
+    }
+
     public Set<EnumRole> getRoles() {
         final EnumSet<EnumRole> r = EnumSet.noneOf(EnumRole.class);
         for (final AccountRoleEntity ar : this.roles) {
@@ -215,6 +229,10 @@ public class AccountEntity {
         a.setLang(this.lang);
         a.setRegisteredAt(this.registeredAt);
         a.setRoles(this.getRoles());
+
+        if (this.profile != null) {
+            a.setProfile(this.profile.toDto());
+        }
 
         return a;
     }
