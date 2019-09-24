@@ -22,7 +22,6 @@ public class Account implements Serializable {
 
     // Account properties specific to HELIX
 
-    @JsonIgnore()
     private Integer           id;
 
     private String            username;
@@ -35,15 +34,12 @@ public class Account implements Serializable {
 
     private String            email;
 
-    @JsonIgnore()
     private String            familyName;
 
-    @JsonIgnore()
     private String            givenName;
 
     private String            lang;
 
-    @JsonIgnore()
     private ZonedDateTime     registeredAt;
 
     private Set<EnumRole>     roles            = EnumSet.noneOf(EnumRole.class);
@@ -187,6 +183,10 @@ public class Account implements Serializable {
 
     public void setProfile(AccountProfile profile) {
         this.profile = profile;
+    }
+
+    public boolean hasRole(EnumRole role) {
+        return this.roles.contains(role);
     }
 
 }
