@@ -23,6 +23,8 @@ public enum BasicErrorCode implements ErrorCode
     IO_ERROR,
     URI_SYNTAX_ERROR,
     HTTP_ERROR,
+
+    VALIDATION_ERROR,
     ;
 
     @Override

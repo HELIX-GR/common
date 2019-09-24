@@ -3,6 +3,9 @@ package gr.helix.core.common.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.validation.FieldError;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -66,6 +69,15 @@ public class RestResponse<Result> {
     }
 
     public static <R> RestResponse<R> error(List<Error> errors) {
+        return new RestResponse<R>(null, errors);
+    }
+
+    public static <R> RestResponse<R> invalid(List<FieldError> fieldErrors) {
+        final List<Error> errors = fieldErrors.stream()
+            .map(e -> {
+                return new Error(BasicErrorCode.VALIDATION_ERROR, e.getField());
+            }).collect(Collectors.toList());
+
         return new RestResponse<R>(null, errors);
     }
 }
