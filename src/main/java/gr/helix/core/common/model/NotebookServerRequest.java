@@ -35,7 +35,7 @@ public class NotebookServerRequest implements Serializable {
     @Email
     @NotBlank
     @JsonProperty("serverUrl")
-    public String serverUrl() {
+    public String getServerUrl() {
         return this.serverUrl;
     }
 
@@ -45,7 +45,7 @@ public class NotebookServerRequest implements Serializable {
     @Email
     @NotBlank
     @JsonProperty("userName")
-    public String userName() {
+    public String getUserName() {
         return this.userName;
     }
 
@@ -55,7 +55,7 @@ public class NotebookServerRequest implements Serializable {
      */
     @NotBlank
     @JsonProperty("dataDirectory")
-    public String dataDirectory() {
+    public String getDataDirectory() {
         return this.dataDirectory;
     }
 
