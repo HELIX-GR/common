@@ -10,6 +10,11 @@ public class AccountInfo implements Serializable {
 
     private final String            name;
 
+    protected AccountInfo() {
+        this.id = null;
+        this.name = "";
+    }
+
     public AccountInfo(int id, String name) {
         this.id = id;
         this.name = name;
