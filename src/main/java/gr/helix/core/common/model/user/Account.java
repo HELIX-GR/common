@@ -2,14 +2,17 @@ package gr.helix.core.common.model.user;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import gr.helix.core.common.model.EnumRole;
 
@@ -18,41 +21,43 @@ import gr.helix.core.common.model.EnumRole;
  */
 public class Account implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long  serialVersionUID = 1L;
 
     // Account properties specific to HELIX
 
-    private Integer           id;
+    private Integer            id;
 
-    private String            username;
-
-    @JsonIgnore()
-    private boolean           active           = true;
+    private String             username;
 
     @JsonIgnore()
-    private boolean           blocked          = false;
+    private boolean            active           = true;
 
-    private String            email;
+    @JsonIgnore()
+    private boolean            blocked          = false;
 
-    private String            familyName;
+    private String             email;
 
-    private String            givenName;
+    private String             familyName;
 
-    private String            lang;
+    private String             givenName;
 
-    private ZonedDateTime     registeredAt;
+    private String             lang;
 
-    private Set<EnumRole>     roles            = EnumSet.noneOf(EnumRole.class);
+    private ZonedDateTime      registeredAt;
+
+    private Set<EnumRole>      roles            = EnumSet.noneOf(EnumRole.class);
+
+    private final List<String> kernels          = new ArrayList<>();
 
     // Authentication provider properties
 
-    private String            name;
+    private String             name;
 
-    private String            imageUrl;
+    private String             imageUrl;
 
     // Profile properties
 
-    private AccountProfile    profile          = new AccountProfile();
+    private AccountProfile     profile          = new AccountProfile();
 
     protected Account() {
     }
@@ -149,14 +154,17 @@ public class Account implements Serializable {
         this.blocked = blocked;
     }
 
+    @JsonProperty
     public Set<EnumRole> getRoles() {
         return this.roles;
     }
 
+    @JsonIgnore
     public void setRoles(Set<EnumRole> roles) {
         this.roles = roles;
     }
 
+    @JsonProperty
     public void setRoles(EnumRole... roles) {
         this.roles = Arrays.stream(roles).collect(Collectors.toSet());
     }
@@ -187,6 +195,14 @@ public class Account implements Serializable {
 
     public boolean hasRole(EnumRole role) {
         return this.roles.contains(role);
+    }
+
+    public List<String> getKernels() {
+        return this.kernels;
+    }
+
+    public boolean hasKernel(String name) {
+        return this.kernels.contains(name);
     }
 
 }

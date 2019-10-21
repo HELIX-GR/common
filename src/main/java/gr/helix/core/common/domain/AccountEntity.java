@@ -80,8 +80,23 @@ public class AccountEntity {
     @JoinColumn(name = "account")
     private AccountProfileEntity profile;
 
-    @OneToMany(targetEntity=AccountRoleEntity.class,mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+        targetEntity = AccountRoleEntity.class,
+        mappedBy = "account",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     List<AccountRoleEntity> roles   = new ArrayList<>();
+
+    @OneToMany(
+        targetEntity = AccountKernelEntity.class,
+        mappedBy = "account",
+        fetch = FetchType.LAZY,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    List<AccountKernelEntity> kernels = new ArrayList<>();
 
     public AccountEntity() {
     }
@@ -176,6 +191,31 @@ public class AccountEntity {
         this.profile = profile;
     }
 
+    public List<AccountKernelEntity> getKernels() {
+        return this.kernels;
+    }
+
+    public boolean hasKernel(String name) {
+        for (final AccountKernelEntity k : this.kernels) {
+            if (k.getKernel().getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void grantKernel(HubKernelEntity kernel, AccountEntity grantedBy) {
+        if (!this.hasKernel(kernel.getName())) {
+            final AccountKernelEntity accountKernel = new AccountKernelEntity();
+
+            accountKernel.setAccount(this);
+            accountKernel.setGrantedBy(grantedBy);
+            accountKernel.setKernel(kernel);
+
+            this.getKernels().add(accountKernel);
+        }
+    }
+
     public Set<EnumRole> getRoles() {
         final EnumSet<EnumRole> r = EnumSet.noneOf(EnumRole.class);
         for (final AccountRoleEntity ar : this.roles) {
@@ -196,6 +236,20 @@ public class AccountEntity {
     public void grant(EnumRole role, AccountEntity grantedBy) {
         if (!this.hasRole(role)) {
             this.roles.add(new AccountRoleEntity(this, role, null, grantedBy));
+
+            // Handle role hierarchy
+            switch (role) {
+                case ROLE_BETA_STUDENT :
+                case ROLE_BETA_ACADEMIC :
+                    this.grant(EnumRole.ROLE_BETA, grantedBy);
+                    break;
+                case ROLE_STANDARD_STUDENT :
+                case ROLE_STANDARD_ACADEMIC :
+                    this.grant(EnumRole.ROLE_STANDARD, grantedBy);
+                    break;
+                default :
+                    // No action
+            }
         }
     }
 
@@ -209,6 +263,20 @@ public class AccountEntity {
         }
         if (target != null) {
             this.roles.remove(target);
+
+            // Handle role hierarchy
+            switch (role) {
+                case ROLE_BETA :
+                    this.revoke(EnumRole.ROLE_BETA_STUDENT);
+                    this.revoke(EnumRole.ROLE_BETA_ACADEMIC);
+                    break;
+                case ROLE_STANDARD :
+                    this.revoke(EnumRole.ROLE_STANDARD_STUDENT);
+                    this.revoke(EnumRole.ROLE_STANDARD_ACADEMIC);
+                    break;
+                default :
+                    // No action
+            }
         }
     }
 
@@ -229,6 +297,7 @@ public class AccountEntity {
         a.setLang(this.lang);
         a.setRegisteredAt(this.registeredAt);
         a.setRoles(this.getRoles());
+        this.kernels.stream().forEach(k -> a.getKernels().add(k.getKernel().getName()));
 
         if (this.profile != null) {
             a.setProfile(this.profile.toDto());

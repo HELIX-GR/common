@@ -17,10 +17,10 @@ import gr.helix.core.common.domain.AccountEntity;
 @Transactional()
 public interface AccountRepository extends JpaRepository<AccountEntity, Integer>, CustomizedAccountRepository  {
 
-    @Query("FROM Account a WHERE a.username = :username")
+    @Query("FROM Account a LEFT JOIN FETCH a.kernels WHERE a.username = :username")
     AccountEntity findOneByUsername(@Param("username") String username);
 
-    @Query("FROM Account a WHERE a.email = :email")
+    @Query("FROM Account a LEFT JOIN FETCH a.kernels WHERE a.email = :email")
     AccountEntity findOneByEmail(@Param("email") String email);
 
     @Query("FROM Account a WHERE a.registeredAt > :start")
