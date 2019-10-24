@@ -12,21 +12,34 @@ public class NotebookServerRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final String      serverUrl;
+    private final String serverUrl;
 
-    private final String      userName;
+    private final String userName;
 
-    private final String      dataDirectory;
+    private final String dataDirectory;
 
+    private final Long memoryQuota;
+    
+    private final Long spaceQuota;
+    
     @JsonCreator
     public NotebookServerRequest(
         @JsonProperty("serverUrl") String serverUrl,
         @JsonProperty("userName") String userName,
-        @JsonProperty("dataDirectory") String dataDirectory
+        @JsonProperty("dataDirectory") String dataDirectory,
+        @JsonProperty("memoryQuota") Long memoryQuota,
+        @JsonProperty("spaceQuota") Long spaceQuota
     ) {
         this.serverUrl = serverUrl;
         this.userName = userName;
         this.dataDirectory = dataDirectory;
+        this.memoryQuota = memoryQuota;
+        this.spaceQuota = spaceQuota;
+    }
+    
+    public NotebookServerRequest(String serverUrl, String userName, String dataDirectory)
+    {
+        this(serverUrl, userName, dataDirectory, null, null);
     }
 
     /**
@@ -58,5 +71,21 @@ public class NotebookServerRequest implements Serializable {
     public String getDataDirectory() {
         return this.dataDirectory;
     }
+    
+    /**
+     * The memory quota (in bytes), or a <code>null</code> value for site defaults.
+     */
+    @JsonProperty("memoryQuota")
+    public Long getMemoryQuota() {
+        return memoryQuota;
+    }
+    
 
+    /**
+     * The disk space quota (in bytes), or a <code>null</code> value for site defaults.
+     */
+    @JsonProperty("spaceQuota")
+    public Long getSpaceQuota() {
+        return spaceQuota;
+    }
 }
