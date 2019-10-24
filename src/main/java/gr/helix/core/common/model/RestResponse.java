@@ -1,6 +1,7 @@
 package gr.helix.core.common.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,7 +76,14 @@ public class RestResponse<Result> {
     public static <R> RestResponse<R> invalid(List<FieldError> fieldErrors) {
         final List<Error> errors = fieldErrors.stream()
             .map(e -> {
-                return new Error(BasicErrorCode.VALIDATION_ERROR, e.getField());
+                final List<String> arguments = Arrays.stream(e.getArguments())
+                    .skip(1)
+                    .map(Object::toString)
+                    .collect(Collectors.toList());
+
+                return new ValidationError(
+                    BasicErrorCode.VALIDATION_ERROR, e.getField(), e.getCode(), arguments
+                );
             }).collect(Collectors.toList());
 
         return new RestResponse<R>(null, errors);

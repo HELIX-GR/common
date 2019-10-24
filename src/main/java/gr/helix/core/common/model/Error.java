@@ -9,11 +9,11 @@ public class Error {
         ;
     }
 
-    private final ErrorCode code;
+    protected final ErrorCode code;
 
-    private final EnumLevel level;
+    protected final EnumLevel level;
 
-    private final String    description;
+    protected final String    description;
 
     public Error(ErrorCode code, String description) {
         this.code = code;
