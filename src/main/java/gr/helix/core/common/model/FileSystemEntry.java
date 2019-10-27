@@ -1,5 +1,7 @@
 package gr.helix.core.common.model;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 /**
@@ -48,5 +50,9 @@ public abstract class FileSystemEntry {
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	
+	public static ZonedDateTime toDateTime(long millis)
+    {
+        return ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC);
+    }
 }

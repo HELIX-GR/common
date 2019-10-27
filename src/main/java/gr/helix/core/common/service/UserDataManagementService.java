@@ -1,6 +1,7 @@
 package gr.helix.core.common.service;
 
 import gr.helix.core.common.model.user.AccountInfo;
+import gr.helix.core.common.model.user.UserDataReport;
 
 public interface UserDataManagementService {
 
@@ -11,12 +12,15 @@ public interface UserDataManagementService {
      *
      * @param userAccount The target user 
      * @param serverHost The server host for the JupyterHub application 
-     * @param spaceQuota A hard limit (bytes) for the space that can be used. If <tt>null</tt>,
-     *    defaults will be used. 
+     * @param quotaForSpace A hard limit (bytes) for the space that can be used. 
+     *    A <tt>null</tt> value corresponds to the defaults.
+     * @param quotaForNumberOfFiles A hard limit for the number of files (i.e the number of inodes) 
+     *    that can be created. A <tt>null</tt> value corresponds to the defaults    
      * 
      * @return True if the operation is successful; Otherwise false is returned
      */
-    boolean setupDirs(AccountInfo userAccount, String serverHost, Long spaceQuota);
+    boolean setupDirs(AccountInfo userAccount, String serverHost,
+        Long quotaForSpace, Long quotaForNumberOfFiles);
     
     /**
      * Cleanup a user's data directory for the JupyterHub cluster.
@@ -30,9 +34,9 @@ public interface UserDataManagementService {
     boolean cleanupDirs(AccountInfo userAccount, String serverHost, boolean deleteDirs);
     
     /**
-     * Report usage of user data directory. 
+     * Get a usage report for user's data directory. 
      * 
      * @param userAccount
      */
-    UserDataReport reportUsage(AccountInfo userAccount);
+    UserDataReport getReport(AccountInfo userAccount);
 }

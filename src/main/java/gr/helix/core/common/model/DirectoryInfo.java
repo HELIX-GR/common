@@ -1,5 +1,8 @@
 package gr.helix.core.common.model;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,10 +21,19 @@ public class DirectoryInfo extends FileSystemEntry {
     public DirectoryInfo(String name, String path, ZonedDateTime createdOn, String type) {
         super(0, name, path, createdOn, "Folder");
     }
+    
+    public DirectoryInfo(String name, String path, long createdOnEpoch, String type) {
+        super(0, name, path, toDateTime(createdOnEpoch), "Folder");
+    }
 
     public DirectoryInfo(String name, String path, ZonedDateTime createdOn, String type, List<FileInfo> files, List<DirectoryInfo> folders) {
         super(0, name, path, createdOn, type);
-
+        this.files.addAll(files);
+        this.folders.addAll(folders);
+    }
+    
+    public DirectoryInfo(String name, String path, long createdOnEpoch, String type, List<FileInfo> files, List<DirectoryInfo> folders) {
+        super(0, name, path, toDateTime(createdOnEpoch), type);
         this.files.addAll(files);
         this.folders.addAll(folders);
     }
@@ -60,5 +72,37 @@ public class DirectoryInfo extends FileSystemEntry {
         }
         this.folders.add(di);
     }
+    
+    //
+    // Utilities
+    //
+    
+    public static DirectoryInfo createDirectoryInfo(String name, Path path, String relativePath)
+    {
+        if (!Files.isDirectory(path) || !Files.isReadable(path))
+            return null;
+        
+        final File file = path.toFile();
 
+        final DirectoryInfo di = new DirectoryInfo(name, relativePath, file.lastModified(), "Folder");
+
+        for (final File f : file.listFiles()) {
+            if (!f.getName().startsWith(".")) {
+                if (f.isDirectory()) {
+                    di.addFolder(createDirectoryInfo(f.getName(), f.toPath(), relativePath + f.getName() + "/"));
+                }
+                if (f.isFile()) {
+                    di.addFile(createFileInfo(f, relativePath));
+                }
+            }
+        }
+
+        return di;
+    }
+
+    public static FileInfo createFileInfo(File file, String path)
+    {
+        return new FileInfo(file.length(), file.getName(), path + file.getName(), file.lastModified(), "File");
+    }
+    
 }
