@@ -19,7 +19,7 @@ public interface UserDataManagementService {
      * 
      * @return True if the operation is successful; Otherwise false is returned
      */
-    boolean setupDirs(AccountInfo userAccount, String serverHost,
+    boolean setupDirectory(AccountInfo userAccount, String serverHost,
         Long quotaForSpace, Long quotaForNumberOfFiles);
     
     /**
@@ -31,7 +31,7 @@ public interface UserDataManagementService {
      * @param deleteDirs A flag indicating if user directory should also be (recursively) deleted
      * @return
      */
-    boolean cleanupDirs(AccountInfo userAccount, String serverHost, boolean deleteDirs);
+    boolean cleanupDirectory(AccountInfo userAccount, String serverHost, boolean deleteDirs);
     
     /**
      * Get a usage report for user's data directory. 
