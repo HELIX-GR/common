@@ -17,42 +17,42 @@ public class UserDataReport
      * <p>A zero value may indicate either that no accounting is enabled or that a limit
      * is not defined (yet).
      */
-    private final Long hardLimitForSpace;
+    private final Long hardLimitForBytes;
     
     /**
      * The soft-limit for space (in bytes).
-     * <p>See note on zeros at {@link #hardLimitForSpace}
+     * <p>See note on zeros at {@link #hardLimitForBytes}
      */
-    private final Long softLimitForSpace;
+    private final Long softLimitForBytes;
     
     /**
-     * The number of inodes used (i.e the number of files).
+     * The number of files used.
      * <p>A zero value indicates either that no accounting is enabled.
      */
-    private final Integer usedInodes;
+    private final Integer usedNumberOfFiles;
     
     /**
-     * The hard-limit for the number of inodes (i.e the number of files).
-     * <p>See note on zeros at {@link #hardLimitForSpace}
+     * The hard-limit for the number of files.
+     * <p>See note on zeros at {@link #hardLimitForBytes}
      */
-    private final Integer hardLimitForInodes;
+    private final Integer hardLimitForNumberOfFiles;
     
     /**
-     * The soft-limit for the number of inodes (i.e the number of files).
-     * <p>See note on zeros at {@link #hardLimitForSpace}
+     * The soft-limit for the number of files.
+     * <p>See note on zeros at {@link #hardLimitForBytes}
      */
-    private final Integer softLimitForInodes;
+    private final Integer softLimitForNumberOfFiles;
 
     public UserDataReport(
-        Long usedBytes, Long hardLimitForSpace, Long softLimitForSpace, 
-        Integer usedInodes, Integer hardLimitForInodes, Integer softLimitForInodes)
+        Long usedBytes, Long hardLimitForBytes, Long softLimitForBytes, 
+        Integer usedNumberOfFiles, Integer hardLimitForNumberOfFiles, Integer softLimitForNumberOfFiles)
     {
         this.usedBytes = usedBytes;
-        this.hardLimitForSpace = hardLimitForSpace;
-        this.softLimitForSpace = softLimitForSpace;
-        this.usedInodes = usedInodes;
-        this.hardLimitForInodes = hardLimitForInodes;
-        this.softLimitForInodes = softLimitForInodes;
+        this.hardLimitForBytes = hardLimitForBytes;
+        this.softLimitForBytes = softLimitForBytes;
+        this.usedNumberOfFiles = usedNumberOfFiles;
+        this.hardLimitForNumberOfFiles = hardLimitForNumberOfFiles;
+        this.softLimitForNumberOfFiles = softLimitForNumberOfFiles;
     }
 
     public Long getUsedBytes()
@@ -60,28 +60,39 @@ public class UserDataReport
         return usedBytes;
     }
 
-    public Long getHardLimitForSpace()
+    public Long getHardLimitForBytes()
     {
-        return hardLimitForSpace;
+        return hardLimitForBytes;
     }
 
-    public Long getSoftLimitForSpace()
+    public Long getSoftLimitForBytes()
     {
-        return softLimitForSpace;
+        return softLimitForBytes;
     }
 
     public Integer getUsedNumberOfFiles()
     {
-        return usedInodes;
+        return usedNumberOfFiles;
     }
 
     public Integer getHardLimitForNumberOfFiles()
     {
-        return hardLimitForInodes;
+        return hardLimitForNumberOfFiles;
     }
 
     public Integer getSoftLimitForNumberOfFiles()
     {
-        return softLimitForInodes;
+        return softLimitForNumberOfFiles;
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format(
+            "UserDataReport [" +
+            "usedBytes=%s, hardLimitForBytes=%s, softLimitForBytes=%s, " +
+            "usedNumberOfFiles=%s, hardLimitForNumberOfFiles=%s, softLimitForNumberOfFiles=%s]",
+            usedBytes, hardLimitForBytes, softLimitForBytes, usedNumberOfFiles,
+            hardLimitForNumberOfFiles, softLimitForNumberOfFiles);
     }
 }
