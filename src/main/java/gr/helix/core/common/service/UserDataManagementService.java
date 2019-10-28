@@ -1,5 +1,7 @@
 package gr.helix.core.common.service;
 
+import java.util.Optional;
+
 import gr.helix.core.common.model.user.AccountInfo;
 import gr.helix.core.common.model.user.UserDataReport;
 
@@ -20,7 +22,7 @@ public interface UserDataManagementService {
      * @return True if the operation is successful; Otherwise false is returned
      */
     boolean setupDirectory(AccountInfo userAccount, String serverHost,
-        Long quotaForSpace, Long quotaForNumberOfFiles);
+        Long quotaForSpace, Integer quotaForNumberOfFiles);
     
     /**
      * Cleanup a user's data directory for the JupyterHub cluster.
@@ -38,5 +40,5 @@ public interface UserDataManagementService {
      * 
      * @param userAccount
      */
-    UserDataReport getReport(AccountInfo userAccount);
+    Optional<UserDataReport> getReport(AccountInfo userAccount);
 }
