@@ -149,6 +149,15 @@ public class WhiteListEntryEntity {
         return false;
     }
 
+    public boolean hasKernel(String name) {
+        for (final WhiteListEntryKernelEntity k : this.kernels) {
+            if (k.getKernel().getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void grant(EnumRole role, AccountEntity grantedBy) {
         if (!this.hasRole(role)) {
             final WhiteListEntryRoleEntity r = new WhiteListEntryRoleEntity(this, role, null, grantedBy);
@@ -161,6 +170,18 @@ public class WhiteListEntryEntity {
             if (role == EnumRole.ROLE_STANDARD_STUDENT || role == EnumRole.ROLE_STANDARD_ACADEMIC) {
                 this.grant(EnumRole.ROLE_STANDARD, grantedBy);
             }
+        }
+    }
+
+    public void grantKernel(HubKernelEntity kernel, AccountEntity grantedBy) {
+        if (!this.hasKernel(kernel.getName())) {
+            final WhiteListEntryKernelEntity accountKernel = new WhiteListEntryKernelEntity();
+
+            accountKernel.setEntry(this);
+            accountKernel.setGrantedBy(grantedBy);
+            accountKernel.setKernel(kernel);
+
+            this.getKernels().add(accountKernel);
         }
     }
 
