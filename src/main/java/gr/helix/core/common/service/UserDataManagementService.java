@@ -1,5 +1,6 @@
 package gr.helix.core.common.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import gr.helix.core.common.model.user.AccountInfo;
@@ -38,7 +39,15 @@ public interface UserDataManagementService {
     /**
      * Get a usage report for user's data directory. 
      * 
-     * @param userAccount
+     * @param accountId The numeric ID of the account
+     * @param serverHost The server host for the JupyterHub application 
      */
-    Optional<UserDataReport> getReport(AccountInfo userAccount);
+    Optional<UserDataReport> getReport(int accountId, String serverHost);
+    
+    /**
+     * List known accounts (as IDs)
+     * 
+     * @param serverHost The server host for the JupyterHub application 
+     */
+    List<Integer> listAccounts(String serverHost);
 }
